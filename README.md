@@ -30,7 +30,7 @@ Create and activate virtual environment
 ```$ virtualenv env -p python3```
 
 
-```$ source env/bin/activate```
+```$ source env/bin/activate ```
 
 Clone the repository [```here```](https://github.com/waracci/store_manager_api) or 
 
