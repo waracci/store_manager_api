@@ -46,3 +46,10 @@ class TestProduct(unittest.TestCase):
         fetch_single_product = self.client().get(
             '/api/v1/products/{}'.format(result['productId']))
         self.assertEqual(fetch_single_product.status_code, 200)
+
+    def tearDown(self):
+        """Empty the products and clear the data"""
+        self.product_data = {}
+
+if __name__=='__main__':
+    unittest.main()
