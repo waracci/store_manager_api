@@ -1,4 +1,7 @@
 # Store Manager
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/bbd8f84f1026a723b45a/maintainability)](https://codeclimate.com/github/waracci/store_manager_api/maintainability)
+
 ## Introduction
 
 Store Manager is a web application that helps store owners manage sales and product inventory records. This application is meant for use in a single store.
