@@ -48,7 +48,7 @@ class ProductEndpoint(Resource):
 class GetSingleQuestion(Resource):
     def get(self, productId):
         """Retrieve a single product"""
-        single_product = Product.fetch_single_product(self, productId)
+        single_product = Product.fetch_single_product(productId)
         if single_product == 'not found':
             return make_response(jsonify({'message': 'not found',
                                           'status': 'ok'}), 404)

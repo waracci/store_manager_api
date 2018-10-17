@@ -44,7 +44,8 @@ class Product():
         """Product Class method to fetch all products"""
         return Product.productList
 
-    def fetch_single_product(self, productId):
+    @staticmethod
+    def fetch_single_product(productId):
         """Product Class method to fetch a single product by ID"""
         product_item = [prod for prod in Product.productList if prod['product_id'] == productId]
         if product_item:

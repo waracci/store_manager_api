@@ -12,7 +12,8 @@ class TestSales(unittest.TestCase):
         self.client = self.app.test_client
         self.sales_data = {
                             "made_by": "James",
-                            "sales_total": 5000
+                            "id1": 10,
+                            "id2": 23
                           }
 
     def test_post_sales(self):
