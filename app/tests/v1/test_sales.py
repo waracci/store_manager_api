@@ -12,8 +12,8 @@ class TestSales(unittest.TestCase):
         self.client = self.app.test_client
         self.sales_data = {
                             "made_by": "James",
-                            "id1": 10,
-                            "id2": 23
+                            "cart": [],
+                            "cart_price": 500
                           }
 
     def test_post_sales(self):
@@ -47,7 +47,7 @@ class TestSales(unittest.TestCase):
         result = json.loads(sale_made.data.decode())
 
         fetch_sales_record = self.client().get(
-            '/api/v1/sales/{}'.format(result['sales']['sale_id']))
+            '/api/v1/sales/{}'.format(result['sales']['id']))
         self.assertEqual(fetch_sales_record.status_code, 200)
 
     def tearDown(self):

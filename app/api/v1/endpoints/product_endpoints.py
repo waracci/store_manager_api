@@ -46,6 +46,7 @@ class ProductEndpoint(Resource):
 
 @api.route('/<int:productId>')
 class GetSingleQuestion(Resource):
+    """Get a single Product record"""
     def get(self, productId):
         """Retrieve a single product"""
         single_product = Product.fetch_single_product(productId)
