@@ -4,7 +4,7 @@ from flask import make_response, jsonify
 from ..models.Product import Product
 
 api = Namespace('Product_endpoints',
-                description='A collection of endpoints for the product model; includes get and post endpoints')
+                description='Endpoints for the product includes get and post')
 
 from ..utils.validator import ProductDataTransferObject
 
@@ -17,6 +17,8 @@ parser.add_argument('product_description')
 parser.add_argument('product_quantity')
 parser.add_argument('product_category')
 parser.add_argument('product_moq')
+
+
 @api.route('')
 class ProductEndpoint(Resource):
     """Contains all the endpoints for Product Model"""
@@ -39,7 +41,7 @@ class ProductEndpoint(Resource):
         return make_response(jsonify({'status': 'ok',
                                       'message': 'success',
                                       'product': posted_product}), 201)
-                                      
+
     # @api.marshal_list_with(product_validator_response, envelope='products')
     def get(self):
         """Retrieve all products"""

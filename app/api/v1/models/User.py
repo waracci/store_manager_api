@@ -30,7 +30,14 @@ class User:
         )
 
         User.registered_users.append(new_user)
-        return new_user
+
+    def get_single_user(self, email):
+        """Retrieve user details by email"""
+
+        single_user = [user for user in User.registered_users if user['email'] == email]
+        if single_user:
+            return single_user
+        return 'not found'
 
     def generate_auth_token(self, user_id):
         """method to generate access token"""
