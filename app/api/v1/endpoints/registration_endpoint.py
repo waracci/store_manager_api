@@ -31,9 +31,9 @@ class RegistrationEndpoint(Resource):
                                           'status': 'failed'}), 401)
 
         # Check for existing registration of email provided
-        existing_user = User.get_single_user(self, email)
+        existing_user = User.get_single_user(email)
 
-        if not existing_user:
+        if existing_user == 'not found':
             try:
                 # Register new User
                 new_user = User(email, password)
@@ -44,8 +44,8 @@ class RegistrationEndpoint(Resource):
                     'status': 'ok'
                 }
                 return make_response(jsonify(success_registration), 200)
-            except Exception as e:
-                return make_response(jsonify({'message': str(e),
+            except Exception as exception_msg:
+                return make_response(jsonify({'message': str(exception_msg),
                                               'status': 'failed'}), 401)
         else:
             return make_response(jsonify({'message': 'User exists. Please sign in',

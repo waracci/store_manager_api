@@ -9,17 +9,19 @@ class User:
 
     # Class variable to save registered users
     registered_users = []
+    password = ''
 
     def __init__(self, email, password):
         """Initialize User Object with an email and password"""
 
         self.email = email
-        self.password = Bcrypt().generate_password_hash(password).decode()
+        User.password = Bcrypt().generate_password_hash(password).decode()
 
-    def validate_user_password(self, password):
+    @classmethod
+    def validate_user_password(cls, password):
         """Compare the user entered password and user registered password"""
 
-        return Bcrypt().check_password_hash(self.password, password)
+        return Bcrypt().check_password_hash(User.password, password)
 
     def save_user(self):
         """Save User Object to Datastructure (dictionary)"""
@@ -31,23 +33,25 @@ class User:
 
         User.registered_users.append(new_user)
 
-    def get_single_user(self, email):
+    @staticmethod
+    def get_single_user(email):
         """Retrieve user details by email"""
 
         single_user = [user for user in User.registered_users if user['email'] == email]
         if single_user:
-            return single_user
+            return single_user[0]
         return 'not found'
 
-    def generate_auth_token(self, user_id):
+    @classmethod
+    def generate_auth_token(cls, email):
         """method to generate access token"""
 
         # Set up payload with an expiration time
         try:
             payload = {
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1, seconds=5),
-                'iat': datetime.datetime.utcnow(),
-                'sub': user_id
+                'exp': datetime.now() + timedelta(days=1, seconds=5),
+                'iat': datetime.now(),
+                'sub': email
             }
 
             return jwt.encode(

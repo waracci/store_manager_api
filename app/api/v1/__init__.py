@@ -5,6 +5,7 @@ from flask import Blueprint
 from .endpoints.product_endpoints import api as product_namespace
 from .endpoints.sales_endpoints import api as sales_namespace
 from .endpoints.registration_endpoint import api as registration_namespace
+from .endpoints.login_endpoint import api as login_namespace
 
 version1 = Blueprint('api version 1', __name__, url_prefix='/api/v1')
 
@@ -16,3 +17,4 @@ api = Api(version1,
 api.add_namespace(product_namespace, path='/products')
 api.add_namespace(sales_namespace, path='/sales')
 api.add_namespace(registration_namespace, path='/register')
+api.add_namespace(login_namespace, path='/login')
