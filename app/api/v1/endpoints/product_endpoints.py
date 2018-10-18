@@ -45,7 +45,7 @@ class ProductEndpoint(Resource):
 
 
 @api.route('/<int:productId>')
-class GetSingleQuestion(Resource):
+class GetSingleProduct(Resource):
     """Get a single Product record"""
     def get(self, productId):
         """Retrieve a single product"""
@@ -56,3 +56,13 @@ class GetSingleQuestion(Resource):
         return make_response(jsonify({'message': 'success',
                                       'status': 'ok',
                                       'product': single_product}), 200)
+
+    def put(self, productId):
+        """Edit a Product record"""
+        edit_product = Product.put(self, productId)
+        if edit_product == 'not found':
+            return make_response(jsonify({'message': 'not found',
+                                          'status': 'ok'}), 404)
+        return make_response(jsonify({'message': 'success',
+                                      'status': 'ok',
+                                      'product': edit_product}), 200)

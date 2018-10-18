@@ -65,7 +65,7 @@ class Product():
             product_item['date_modified'] = datetime.now()
 
             return product_item
-        return 'nott found'
+        return 'not found'
 
     def delete(self, productId):
         """Class method to delete products from inventory"""
