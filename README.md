@@ -1,8 +1,8 @@
 # Store Manager
 
+[![Build Status](https://travis-ci.com/waracci/store_manager_api.svg?branch=master)](https://travis-ci.com/waracci/store_manager_api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/bbd8f84f1026a723b45a/maintainability)](https://codeclimate.com/github/waracci/store_manager_api/maintainability)
-
-[![Coverage Status](https://coveralls.io/repos/github/waracci/store_manager_api/badge.svg)](https://coveralls.io/github/waracci/store_manager_api)
+[![Coverage Status](https://coveralls.io/repos/github/waracci/store_manager_api/badge.svg?branch=bg-fix-travis-integration-161306446)](https://coveralls.io/github/waracci/store_manager_api?branch=bg-fix-travis-integration-161306446)
 
 ## Introduction
 
