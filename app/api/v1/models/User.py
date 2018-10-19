@@ -59,8 +59,8 @@ class User:
                 secret_key,
                 algorithm='HS256'
             )
-        except Exception as e:
-            return e
+        except Exception as exception_msg:
+            return exception_msg
 
     @staticmethod
     def decode_auth_token(authentication_token):

@@ -1,6 +1,7 @@
 """Login endpoint [POST]"""
 from flask_restplus import Namespace, Resource, reqparse
 from flask import make_response, jsonify
+from validate_email import validate_email
 
 from ..models.User import User
 
@@ -23,9 +24,22 @@ class LoginEndpoint(Resource):
         email = args['email']
         password = args['password']
 
+        is_valid = validate_email(email)
+        if not is_valid:
+            return make_response(jsonify({'message': 'enter a valid email',
+                                          'status': 'failed'}), 400)
+
+        # Fetch user by email to check if user exists
+        existing_user = User.get_single_user(email)
+        if email and existing_user == 'not found':
+            return make_response(jsonify({'message': 'Unknown email. Please sign up',
+                                              'status': 'failed'}), 401)
+
+        if User.password == '' or password == None:
+            return make_response(jsonify({'message': 'incomplete credentials provided. Please try again',
+                                              'status': 'failed'}), 401)
+
         try:
-            # Fetch user by email to check if user exists
-            existing_user = User.get_single_user(email)
             if existing_user and User.validate_user_password(password):
                 # Generate access token
                 authentication_token = User.generate_auth_token(existing_user['email'])
