@@ -53,48 +53,48 @@ class TestProduct(unittest.TestCase):
         self.assertEqual(result['message'], 'success')
         self.assertEqual(product_posted.status_code, 201)
 
-    # def test_fetch_all_products(self):
-    #     """Test that a user can fetch all products"""
+    def test_fetch_all_products(self):
+        """Test that a user can fetch all products"""
 
-    #     # Authenticate User
-    #     self.user_authentication_register(email="mailxx@mail.com", password="pass", confirm_password="pass")
-    #     response = self.user_authentication_login(email="mailxx@mail.com", password="pass")
+        # Authenticate User
+        self.user_authentication_register(email="mailxx@mail.com", password="pass", confirm_password="pass")
+        response = self.user_authentication_login(email="mailxx@mail.com", password="pass")
 
-    #     authentication_token = json.loads(response.data.decode())['access_token']
+        authentication_token = json.loads(response.data.decode())['access_token']
 
-    #     product_posted = self.client().post(
-    #         '/api/v1/products',
-    #         headers=dict(Authorization="Bearer {}".format(authentication_token)),
-    #         data=self.product_data)
-    #     result = json.loads(product_posted.data.decode())
-    #     self.assertEqual(result['message'], 'success')
-    #     self.assertEqual(product_posted.status_code, 201)
+        product_posted = self.client().post(
+            '/api/v1/products',
+            headers=dict(Authorization="Bearer {}".format(authentication_token)),
+            data=self.product_data)
+        result = json.loads(product_posted.data.decode())
+        self.assertEqual(result['message'], 'success')
+        self.assertEqual(product_posted.status_code, 201)
 
-    #     fetch_product = self.client().get(
-    #         '/api/v1/products',
-    #         headers=dict(Authorization="Bearer {}".format(authentication_token)))
-    #     self.assertEqual(fetch_product.status_code, 200)
+        fetch_product = self.client().get(
+            '/api/v1/products',
+            headers=dict(Authorization="Bearer {}".format(authentication_token)))
+        self.assertEqual(fetch_product.status_code, 200)
 
-    # def test_fetch_single_product(self):
-    #     """Test user can fetch specific product using the product's id"""
+    def test_fetch_single_product(self):
+        """Test user can fetch specific product using the product's id"""
 
-    #     # Authenticate User
-    #     self.user_authentication_register(email="ulbricht@mail.com", password="pass", confirm_password="pass")
-    #     response = self.user_authentication_login(email="ulbricht@mail.com", password="pass")
+        # Authenticate User
+        self.user_authentication_register(email="ulbricht@mail.com", password="pass", confirm_password="pass")
+        response = self.user_authentication_login(email="ulbricht@mail.com", password="pass")
 
-    #     authentication_token = json.loads(response.data.decode())['access_token']
+        authentication_token = json.loads(response.data.decode())['access_token']
 
-    #     product_posted = self.client().post(
-    #         '/api/v1/products',
-    #         headers=dict(Authorization="Bearer {}".format(authentication_token)),
-    #         data=self.product_data)
-    #     result = json.loads(product_posted.data.decode())
-    #     self.assertEqual(product_posted.status_code, 201)
+        product_posted = self.client().post(
+            '/api/v1/products',
+            headers=dict(Authorization="Bearer {}".format(authentication_token)),
+            data=self.product_data)
+        result = json.loads(product_posted.data.decode())
+        self.assertEqual(product_posted.status_code, 201)
 
-    #     fetch_single_product = self.client().get(
-    #         '/api/v1/products/{}'.format(result['product']['product_id']),
-    #         headers=dict(Authorization="Bearer {}".format(authentication_token)))
-    #     self.assertEqual(fetch_single_product.status_code, 200)
+        fetch_single_product = self.client().get(
+            '/api/v1/products/{}'.format(result['product']['product_id']),
+            headers=dict(Authorization="Bearer {}".format(authentication_token)))
+        self.assertEqual(fetch_single_product.status_code, 200)
 
     def tearDown(self):
         """Empty the products and clear the data"""
