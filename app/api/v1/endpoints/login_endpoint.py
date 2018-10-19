@@ -6,7 +6,7 @@ from validate_email import validate_email
 from ..models.User import User
 
 api = Namespace('User Login',
-                description='User login functionality')
+                description='User login')
 
 parser = reqparse.RequestParser()
 parser.add_argument('email')
@@ -29,14 +29,17 @@ class LoginEndpoint(Resource):
             return make_response(jsonify({'message': 'enter a valid email',
                                           'status': 'failed'}), 400)
 
+        if password == None:
+            return make_response(jsonify({'message': 'incomplete credentials provided. Please try again',
+                                              'status': 'failed'}), 401)
+
+        if User.password == '':
+            return make_response(jsonify({'message': 'Invalid email or password. Please try again',
+                                              'status': 'failed'}), 401)
         # Fetch user by email to check if user exists
         existing_user = User.get_single_user(email)
         if email and existing_user == 'not found':
             return make_response(jsonify({'message': 'Unknown email. Please sign up',
-                                              'status': 'failed'}), 401)
-
-        if User.password == '' or password == None:
-            return make_response(jsonify({'message': 'incomplete credentials provided. Please try again',
                                               'status': 'failed'}), 401)
 
         try:

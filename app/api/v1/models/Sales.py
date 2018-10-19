@@ -45,3 +45,10 @@ class Sales():
         if sale_record:
             return sale_record
         return 'not found'
+    @staticmethod
+    def fetch_sales_by_email(email):
+        """Sale method to fetch a single sale record"""
+        sale_record = [sale for sale in Sales.salesList if sale['made_by'] == email]
+        if sale_record:
+            return sale_record
+        return 'not found'

@@ -6,12 +6,13 @@ from validate_email import validate_email
 from ..models.User import User
 
 api = Namespace('User registration endpoint',
-                description='User registration endpoint')
+                description='User registration')
 
 parser = reqparse.RequestParser()
 parser.add_argument('email')
 parser.add_argument('password')
 parser.add_argument('confirm_password')
+parser.add_argument('role')
 
 
 @api.route('')
@@ -25,6 +26,7 @@ class RegistrationEndpoint(Resource):
         email = args['email']
         password = args['password']
         confirm_password = args['confirm_password']
+        role = args['role']
 
         is_valid = validate_email(email)
         if not is_valid:
@@ -46,7 +48,7 @@ class RegistrationEndpoint(Resource):
         if existing_user == 'not found':
             try:
                 # Register new User
-                new_user = User(email, password)
+                new_user = User(email, password, role)
                 new_user.save_user()
 
                 success_registration = {

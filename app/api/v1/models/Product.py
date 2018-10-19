@@ -20,6 +20,7 @@ class Product():
         self.product_category = product_category
         self.product_moq = product_moq
         self.product_quantity_store = Product.product_quantity_store
+        self.added_by = ''
 
         self.date_created = datetime.now()
         self.date_modified = datetime.now()
@@ -34,6 +35,7 @@ class Product():
             product_category=self.product_category,
             product_moq=self.product_moq,
             product_quantity_store=self.product_quantity_store,
+            added_by=self.added_by,
             date_created=self.date_created,
             date_modified=self.date_modified
         )

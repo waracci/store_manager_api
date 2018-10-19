@@ -11,11 +11,13 @@ class User:
     registered_users = []
     password = ''
 
-    def __init__(self, email, password):
+    def __init__(self, email, password, role):
         """Initialize User Object with an email and password"""
 
         self.email = email
         User.password = Bcrypt().generate_password_hash(password).decode()
+        self.role = role
+        self.created_at = datetime.now()
 
     @classmethod
     def validate_user_password(cls, password):
@@ -28,7 +30,9 @@ class User:
 
         new_user = dict(
             email=self.email,
-            password=self.password
+            password=self.password,
+            role=self.role,
+            created_at=self.created_at
         )
 
         User.registered_users.append(new_user)
@@ -48,14 +52,14 @@ class User:
 
         # Set up payload with an expiration time
         try:
-            payload = {
+            jwt_payload = {
                 'exp': datetime.now() + timedelta(days=1, seconds=5),
                 'iat': datetime.now(),
                 'sub': email
             }
 
             return jwt.encode(
-                payload,
+                jwt_payload,
                 secret_key,
                 algorithm='HS256'
             )

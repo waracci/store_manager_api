@@ -1,10 +1,11 @@
 """Product endpoints get and post methods"""
 from flask_restplus import Namespace, Resource, reqparse
-from flask import make_response, jsonify
+from flask import make_response, jsonify, request
 from ..models.Product import Product
+from ..models.User import User
 
 api = Namespace('Product_endpoints',
-                description='Endpoints for the product includes get and post')
+                description='Product endpoints')
 
 from ..utils.validator import ProductDataTransferObject
 
@@ -29,24 +30,65 @@ class ProductEndpoint(Resource):
     @api.doc(docStr)
     def post(self):
         """add product"""
-        args = parser.parse_args()
-        name = args['product_name']
-        description = args['product_description']
-        quantity = args['product_quantity']
-        category = args['product_category']
-        moq = args['product_moq']
 
-        new_product = Product(name, description, quantity, category, moq)
-        posted_product = new_product.post_product()
-        return make_response(jsonify({'status': 'ok',
-                                      'message': 'success',
-                                      'product': posted_product}), 201)
+        # User Authentication
+        authentication_header = request.headers.get('Authorization')
+        try:
+            access_token = authentication_header.split(" ")[1]
+            user_identity = User.decode_auth_token(access_token)
+            if user_identity == 'Invalid token. Please sign in again':
+                return make_response(jsonify({'status': 'failed',
+                                              'message': 'Invalid token. Please sign in again'}), 401)
+            
+        except Exception:
+            return make_response(jsonify({'status': 'failed',
+                                          'message': 'authorization required'}), 401)
+        
+        if access_token:
+            role = User.get_single_user(user_identity)
+            if role['role'] == 'attendant':
+                return make_response(jsonify({'status': 'failed',
+                                            'message': 'requires admin'}), 401)
+            args = parser.parse_args()
+            name = args['product_name']
+            description = args['product_description']
+            quantity = args['product_quantity']
+            category = args['product_category']
+            moq = args['product_moq']
+
+            new_product = Product(name, description, quantity, category, moq)
+            new_product.added_by = user_identity
+            posted_product = new_product.post_product()
+            return make_response(jsonify({'status': 'ok',
+                                        'message': 'success',
+                                        'product': posted_product}), 201)
+        
+        return make_response(jsonify({'status': 'failed',
+                                        'message': 'authorization required'}), 401)
 
     # @api.marshal_list_with(product_validator_response, envelope='products')
     def get(self):
         """Retrieve all products"""
-        products = Product.fetch_all_products(self)
-        return make_response(jsonify({'message': 'success',
+        # User Authentication
+        authentication_header = request.headers.get('Authorization')
+        try:
+            access_token = authentication_header.split(" ")[1]
+            user_identity = User.decode_auth_token(access_token)
+            
+            if user_identity == 'Invalid token. Please sign in again':
+                return make_response(jsonify({'status': 'failed',
+                                        'message': 'Invalid token. Please sign in again'}), 401)
+        except Exception:
+            return make_response(jsonify({'status': 'failed',
+                                        'message': 'authorization required'}), 401)
+
+        if access_token:
+            products = Product.fetch_all_products(self)
+            if len(products) == 0:
+                return make_response(jsonify({'message': 'success',
+                                      'status': 'ok',
+                                      'product': 'No products added to inventory'}), 200)
+            return make_response(jsonify({'message': 'success',
                                       'status': 'ok',
                                       'product': products}), 200)
 
@@ -56,20 +98,24 @@ class GetSingleProduct(Resource):
     """Get a single Product record"""
     def get(self, productId):
         """Retrieve a single product"""
-        single_product = Product.fetch_single_product(productId)
-        if single_product == 'not found':
-            return make_response(jsonify({'message': 'not found',
-                                          'status': 'ok'}), 404)
-        return make_response(jsonify({'message': 'success',
-                                      'status': 'ok',
-                                      'product': single_product}), 200)
+        # User Authentication
+        authentication_header = request.headers.get('Authorization')
+        try:
+            access_token = authentication_header.split(" ")[1]
+            user_identity = User.decode_auth_token(access_token)
+            
+            if user_identity == 'Invalid token. Please sign in again':
+                return make_response(jsonify({'status': 'failed',
+                                        'message': 'Invalid token. Please sign in again'}), 401)
+        except Exception:
+            return make_response(jsonify({'status': 'failed',
+                                        'message': 'authorization required'}), 401)
 
-    def put(self, productId):
-        """Edit a Product record"""
-        edit_product = Product.put(self, productId)
-        if edit_product == 'not found':
-            return make_response(jsonify({'message': 'not found',
-                                          'status': 'ok'}), 404)
-        return make_response(jsonify({'message': 'success',
-                                      'status': 'ok',
-                                      'product': edit_product}), 200)
+        if access_token:
+            single_product = Product.fetch_single_product(productId)
+            if single_product == 'not found':
+                return make_response(jsonify({'message': 'not found',
+                                            'status': 'ok'}), 404)
+            return make_response(jsonify({'message': 'success',
+                                        'status': 'ok',
+                                        'product': single_product}), 200)
