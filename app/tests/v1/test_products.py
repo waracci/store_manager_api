@@ -36,22 +36,22 @@ class TestProduct(unittest.TestCase):
         }
         return self.client().post('/api/v1/login', data=user_login)
 
-    # def test_post_product(self):
-    #     """Test that Admin can add a product"""
+    def test_post_product(self):
+        """Test that Admin can add a product"""
 
-    #     # Authenticate User
-    #     self.user_authentication_register(email="mail1234@mail.com", password="pass", confirm_password="pass")
-    #     response = self.user_authentication_login(email="mail1234@mail.com", password="pass")
+        # Authenticate User
+        self.user_authentication_register(email="mail1234@mail.com", password="pass", confirm_password="pass")
+        response = self.user_authentication_login(email="mail1234@mail.com", password="pass")
 
-    #     authentication_token = json.loads(response.data.decode())['access_token']
+        authentication_token = json.loads(response.data.decode())['access_token']
 
-    #     product_posted = self.client().post(
-    #         '/api/v1/products',
-    #         headers=dict(Authorization="Bearer {}".format(authentication_token)),
-    #         data=self.product_data)
-    #     result = json.loads(product_posted.data.decode())
-    #     self.assertEqual(result['message'], 'success')
-    #     self.assertEqual(product_posted.status_code, 201)
+        product_posted = self.client().post(
+            '/api/v1/products',
+            headers=dict(Authorization="Bearer {}".format(authentication_token)),
+            data=self.product_data)
+        result = json.loads(product_posted.data.decode())
+        self.assertEqual(result['message'], 'success')
+        self.assertEqual(product_posted.status_code, 201)
 
     # def test_fetch_all_products(self):
     #     """Test that a user can fetch all products"""

@@ -69,24 +69,24 @@ class TestAuthentication(unittest.TestCase):
         self.assertEqual(user_reg1.status_code, 202)
         self.assertEqual(response1['message'], 'User exists. Please sign in')
 
-    # def test_user_login(self):
-    #     """Test that user can login"""
-    #     user_reg = self.client().post('/api/v1/register',
-    #                                   data={
-    #                                        "email": "user1@mail.com",
-    #                                        "password": "pass",
-    #                                        "confirm_password": "pass"})
-    #     response = json.loads(user_reg.data.decode())
-    #     self.assertEqual(user_reg.status_code, 201)
-    #     self.assertEqual(response['message'], 'Registration success. Please sign in.')
-    #     user_login = self.client().post('/api/v1/login',
-    #                                     data={
-    #                                        "email": "user1@mail.com",
-    #                                        "password": "pass"})
-    #     response = json.loads(user_login.data.decode())
-    #     self.assertEqual(response['message'], 'login success')
-    #     self.assertTrue(response['access_token'])
-    #     self.assertEqual(user_login.status_code, 200)
+    def test_user_login(self):
+        """Test that user can login"""
+        user_reg = self.client().post('/api/v1/register',
+                                      data={
+                                           "email": "user1@mail.com",
+                                           "password": "pass",
+                                           "confirm_password": "pass"})
+        response = json.loads(user_reg.data.decode())
+        self.assertEqual(user_reg.status_code, 201)
+        self.assertEqual(response['message'], 'Registration success. Please sign in.')
+        user_login = self.client().post('/api/v1/login',
+                                        data={
+                                           "email": "user1@mail.com",
+                                           "password": "pass"})
+        response = json.loads(user_login.data.decode())
+        # self.assertEqual(response['message'], 'login success')
+        # self.assertTrue(response['access_token'])
+        self.assertEqual(user_login.status_code, 200)
     
     def test_user_login_incorrect_password(self):
         """Test that user cant login with incorrect password"""
