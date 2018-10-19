@@ -4,6 +4,8 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/bbd8f84f1026a723b45a/maintainability)](https://codeclimate.com/github/waracci/store_manager_api/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/waracci/store_manager_api/badge.svg?branch=bg-fix-travis-integration-161306446)](https://coveralls.io/github/waracci/store_manager_api?branch=bg-fix-travis-integration-161306446)
 
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ba6b8dd6282f013d9e7e)
+
 ## Introduction
 
 Store Manager is a web application that helps store owners manage sales and product inventory records. This application is meant for use in a single store.
