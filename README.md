@@ -1,4 +1,7 @@
 # Store Manager
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/819ddf657d2248178ea233959e9b00fb)](https://app.codacy.com/app/waracci/store_manager_api?utm_source=github.com&utm_medium=referral&utm_content=waracci/store_manager_api&utm_campaign=Badge_Grade_Dashboard)
+
 ## Introduction
 
 Store Manager is a web application that helps store owners manage sales and product inventory records. This application is meant for use in a single store.
