@@ -25,3 +25,12 @@ class ProductDataTransferObject():
         'date_created': fields.String(description='date product was added to inventory'),
         'date_modified': fields.String(description='date product details were modified')
     })
+
+class SalesDataTransferObject():
+    pass
+
+class LoginDataTransferObject():
+    pass
+
+class RegisterDataTransferObject():
+    pass

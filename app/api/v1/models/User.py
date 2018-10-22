@@ -55,7 +55,8 @@ class User:
             jwt_payload = {
                 'exp': datetime.now() + timedelta(days=1, seconds=5),
                 'iat': datetime.now(),
-                'sub': email
+                'sub': email,
+                # 'role': role
             }
 
             return jwt.encode(

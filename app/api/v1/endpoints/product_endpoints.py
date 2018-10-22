@@ -46,6 +46,7 @@ class ProductEndpoint(Resource):
         
         if access_token:
             role = User.get_single_user(user_identity)
+            print(role['role'])
             if role['role'] == 'attendant':
                 return make_response(jsonify({'status': 'failed',
                                             'message': 'requires admin'}), 401)
