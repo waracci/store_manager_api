@@ -105,29 +105,74 @@ class GetSingleProduct(Resource):
     def get(self, productId):
         """Retrieve a single product"""
         # User Authentication
-        # authentication_header = request.headers.get('Authorization')
-        # try:
-        #     access_token = authentication_header.split(" ")[1]
-        #     user_identity = User.decode_auth_token(access_token)
+        authentication_header = request.headers.get('Authorization')
+        try:
+            access_token = authentication_header.split(" ")[1]
+            user_identity = User.decode_auth_token(access_token)
             
-        #     if user_identity == 'Invalid token. Please sign in again':
-        #         return make_response(jsonify({'status': 'failed',
-        #                                 'message': 'Invalid token. Please sign in again'}), 401)
-        # except Exception:
-        #     return make_response(jsonify({'status': 'failed',
-        #                                 'message': 'authorization required'}), 401)
+            if user_identity == 'Invalid token. Please sign in again':
+                return make_response(jsonify({'status': 'failed',
+                                        'message': 'Invalid token. Please sign in again'}), 401)
+        except Exception:
+            return make_response(jsonify({'status': 'failed',
+                                        'message': 'authorization required'}), 401)
 
-        # if access_token:
-        single_product = Product.fetch_single_product(productId)
-        if single_product == 'not found':
-            return make_response(jsonify({'message': 'not found',
-                                        'status': 'ok'}), 200)
-        return make_response(jsonify({'message': 'success',
-                                    'status': 'ok',
-                                    'product': single_product}), 200)
+        if access_token:
+            if not isinstance(productId, int):
+                return make_response(jsonify({'status': 'failed',
+                                        'message': 'id requires integer'}), 400)
+            single_product = Product.fetch_single_product(productId)
+            if single_product == 'not found':
+                return make_response(jsonify({'message': 'not found',
+                                            'status': 'ok'}), 200)
+            return make_response(jsonify({'message': 'success',
+                                        'status': 'ok',
+                                        'product': single_product}), 200)
 
     def put(self, productId):
-        pass
+        # User Authentication
+        authentication_header = request.headers.get('Authorization')
+        try:
+            access_token = authentication_header.split(" ")[1]
+            user_identity = User.decode_auth_token(access_token)
+            
+            if user_identity == 'Invalid token. Please sign in again':
+                return make_response(jsonify({'status': 'failed',
+                                        'message': 'Invalid token. Please sign in again'}), 401)
+        except Exception:
+            return make_response(jsonify({'status': 'failed',
+                                        'message': 'authorization required'}), 401)
+
+        if access_token:
+            args = parser.parse_args()
+            name = args['product_name']
+            description = args['product_description']
+            quantity = args['product_quantity']
+            category = args['product_category']
+            moq = args['product_moq']
+            existing_product = Product.fetch_single_product(productId)
+            if 'not found' in existing_product:
+                return dict(message="product not found", status="failed"), 404
+            product_update = Product.edit_product(productId, name, description, quantity, category, moq)
+
+            return make_response(jsonify(product_update), 200)
 
     def delete(self, productId):
-        pass
+        # User Authentication
+        authentication_header = request.headers.get('Authorization')
+        try:
+            access_token = authentication_header.split(" ")[1]
+            user_identity = User.decode_auth_token(access_token)
+            
+            if user_identity == 'Invalid token. Please sign in again':
+                return make_response(jsonify({'status': 'failed',
+                                        'message': 'Invalid token. Please sign in again'}), 401)
+        except Exception:
+            return make_response(jsonify({'status': 'failed',
+                                        'message': 'authorization required'}), 401)
+
+        if access_token:
+            deleted_product = Product.delete_product(productId)
+            if 'not found' in deleted_product:
+                return dict(message="product not found", status="failed"), 404
+            return dict(message="product deleted successfully", status="failed"), 200

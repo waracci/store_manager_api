@@ -53,23 +53,24 @@ class Product():
         if product_item:
             return product_item
         return 'not found'
-
-    def put(self, productId):
+    @staticmethod
+    def edit_product(productId, name, description, quantity, category, moq):
         """Class method to Edit Product details"""
         product_item = [prod for prod in Product.productList if prod['product_id'] == productId]
         if product_item:
-            product_item['product_name'] = self.product_name
-            product_item['product_description'] = self.product_description
-            product_item['product_quantity'] = self.product_quantity
-            product_item['product_category'] = self.product_category
-            product_item['product_moq'] = self.product_moq
-            product_item['product_quantity_store'] += self.product_quantity_store
-            product_item['date_modified'] = datetime.now()
+            print(product_item[0])
+            product_item[0]['product_name'] = name
+            product_item[0]['product_description'] = description
+            product_item[0]['product_quantity'] = quantity
+            product_item[0]['product_category'] = category
+            product_item[0]['product_moq'] = moq
+            product_item[0]['date_modified'] = datetime.now()
 
             return product_item
         return 'not found'
 
-    def delete(self, productId):
+    @staticmethod
+    def delete_product(productId):
         """Class method to delete products from inventory"""
 
         purge_product = [prod for prod in Product.productList if prod['product_id'] == productId]

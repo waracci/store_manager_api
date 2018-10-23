@@ -44,11 +44,14 @@ class SalesEndpoint(Resource):
             args = parser.parse_args()
             made_by = user_identity
             cart = args['cart']
-            cart = {
-                'id': 1,
-                'quantity': 5
-            }
             cart_price = ['cart_price']
+
+            cart_payload = (cart.split(","))
+            if len(cart_payload) > 2:
+                return make_response(jsonify({'status': 'failed',
+                                          'message': 'cart error'}), 400)
+            # sold_productId = cart[0]
+            # product_quantity = cart[2]
 
             new_sale = Sales(made_by, cart, cart_price)
             posted_sale = new_sale.post_sales()
