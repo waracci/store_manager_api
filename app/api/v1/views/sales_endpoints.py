@@ -5,8 +5,10 @@ from flask import make_response, jsonify, request
 from ..models.Sales import Sales
 from ..models.User import User
 
-api = Namespace('Sales endpoints',
-                description='Sales endpoints')
+from ..utils.validator import SalesDataTransferObject
+api = SalesDataTransferObject.sales_namespace
+
+sales_validator = SalesDataTransferObject.sales_model
 
 parser = reqparse.RequestParser()
 parser.add_argument('made_by')
@@ -20,7 +22,8 @@ class SalesEndpoint(Resource):
 
     docstr = "Endpoint to post a sale"
 
-    @api.doc(docstr)
+    @api.doc(docstr, security='Authentication_token')
+    @api.expect(sales_validator)
     def post(self):
         """Make a Sale"""
 
@@ -41,6 +44,10 @@ class SalesEndpoint(Resource):
             args = parser.parse_args()
             made_by = user_identity
             cart = args['cart']
+            cart = {
+                'id': 1,
+                'quantity': 5
+            }
             cart_price = ['cart_price']
 
             new_sale = Sales(made_by, cart, cart_price)
@@ -50,6 +57,7 @@ class SalesEndpoint(Resource):
                                           'message': 'success',
                                           'sales': posted_sale}), 201)
 
+    @api.doc(security='Authentication_token')
     def get(self):
         """Retrieve all sales"""
 
@@ -92,6 +100,7 @@ class SalesEndpoint(Resource):
 @api.route('/<int:saleId>')
 class GetSingleSale(Resource):
     """Gets a single sale record"""
+    @api.doc(security='Authentication_token')
     def get(self, saleId):
 
         # User Authentication

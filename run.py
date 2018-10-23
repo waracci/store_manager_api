@@ -8,7 +8,7 @@ app = create_app(os.getenv('APP_SETTINGS'))
 
 @app.route('/')
 def index():
-    return 'mmmmyello world'
+    return 'hello world'
 
 if __name__ == '__main__':
     app.run()

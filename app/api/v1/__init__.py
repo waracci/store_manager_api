@@ -2,19 +2,25 @@ from flask_restplus import Api
 from flask import Blueprint
 
 # Import all endpoints for all models
-from .endpoints.product_endpoints import api as product_namespace
-from .endpoints.sales_endpoints import api as sales_namespace
-from .endpoints.registration_endpoint import api as registration_namespace
-from .endpoints.login_endpoint import api as login_namespace
+from .views.product_endpoints import api as product_namespace
+from .views.sales_endpoints import api as sales_namespace
+from .views.auth_endpoint import api as auth_endpoint
 
 version1 = Blueprint('api version 1', __name__, url_prefix='/api/v1')
+
+authorizations = {'Authentication_token': {
+  'type': 'apiKey',
+  'in': 'header',
+  'name': 'Authorization'
+}}
 
 api = Api(version1,
           title='Store manager API',
           version='1.0',
           description='An application that helps store owners manage sales \
-            and product inventory records')
+            and product inventory records',
+          authorizations=authorizations)
+          
+api.add_namespace(auth_endpoint, path='/')
 api.add_namespace(product_namespace, path='/products')
 api.add_namespace(sales_namespace, path='/sales')
-api.add_namespace(registration_namespace, path='/register')
-api.add_namespace(login_namespace, path='/login')

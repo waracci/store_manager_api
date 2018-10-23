@@ -47,7 +47,6 @@ class TestSales(unittest.TestCase):
             '/api/v1/sales',
             headers=dict(Authorization="Bearer {}".format(authentication_token)),
             data=self.sales_data)
-        print(sale_made)
         result = json.loads(sale_made.data.decode())
         self.assertEqual(sale_made.status_code, 201)
         self.assertEqual(result['message'], 'success')
@@ -84,7 +83,6 @@ class TestSales(unittest.TestCase):
             '/api/v1/sales',
             headers=dict(Authorization="Bearer {}".format(authentication_token)),
             data=self.sales_data)
-        print(sale_made)
         result = json.loads(sale_made.data.decode())
         fetch_sales_record = self.client().get(
             '/api/v1/sales/{}'.format(result['sales']['id']),

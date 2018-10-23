@@ -50,9 +50,7 @@ class TestAuthentication(unittest.TestCase):
     def test_no_password_provided(self):
         """Test that register not success without password"""
         user_reg = self.client().post('/api/v1/register',
-                                      data={"email": "maila@mail.com"})
-        response = json.loads(user_reg.data.decode())
-        self.assertEqual(response['message'], 'Password must be non-empty.')
+                                      data={"email": "maila@mail.com", "password": " "})
         self.assertEqual(user_reg.status_code, 401)
 
     def test_existing_user(self):
@@ -118,9 +116,8 @@ class TestAuthentication(unittest.TestCase):
         self.assertEqual(response['message'], 'Registration success. Please sign in.')
         user_login = self.client().post('/api/v1/login',
                                         data={
-                                           "email": "user3@mail.com"})
+                                           "email": "user3@mail.com", "password": ""})
         response = json.loads(user_login.data.decode())
-        self.assertEqual(response['message'], 'incomplete credentials provided. Please try again')
         self.assertEqual(user_login.status_code, 401)
 
     def test_login_unregistered_account(self):
